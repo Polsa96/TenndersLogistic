@@ -1,0 +1,93 @@
+@import '../../styles/abstracts/variables';
+
+.navbar{
+    position:fixed;
+    width:100%;
+    background-color:$bg-brown-dark;
+    // padding:1rem 2rem;
+    @include flexbox(row, space-between, center);
+
+    &--home{
+        img{
+            width:10rem;
+            padding:1rem 0rem 1rem 2rem;
+        }
+    }
+    &--sites{
+
+        @include flexbox(row, space-between, center);
+            padding: 0rem 2rem 0rem 0rem;
+            width:40%;
+            min-width:28rem;
+            a{
+                color:$text-yellow;
+                white-space:nowrap;
+            }
+            
+
+        @media(max-width:$medium){
+            @include flexbox(column, center, start);
+            position:absolute;
+            background-color:$bg-brown-dark;
+            
+            padding: 0rem 0rem 0rem 0rem;
+            width:100%;
+            min-width:1rem;
+            top:3rem;
+            a{
+                color:$text-white;
+                padding: 1rem 0rem 1rem 2rem;
+            }
+
+            .change{
+                display:none;
+            }
+        }
+        
+            
+        
+        
+    }
+
+    &--button {
+        display:none;
+        margin:1rem 2rem 1rem 0rem;
+        @media(max-width:$medium){
+            display:inline;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+
+            &--burger{
+                div{
+                    width:20px;
+                    height:2px;
+                    background-color: whitesmoke;
+                    margin:5px;
+                    transition: all 0.5s ease;
+                }
+            }
+        }
+        
+        
+            
+        
+
+        
+
+        
+
+    }
+}
+
+//TRANSFORMACIÓN DE LA HAMBURGUESA A CRUZ
+.change .navbar--button--burger .line1{
+    transform: rotate(-45deg) translate(-4px,6px);
+}
+.change .navbar--button--burger .line2 {
+    opacity:0;
+}
+.change .navbar--button--burger .line3 {
+    transform: rotate(45deg) translate(-4px,-6px);
+}
+

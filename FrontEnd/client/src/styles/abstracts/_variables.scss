@@ -1,0 +1,39 @@
+//GROSOR DEL APARATO
+$small:576px;         //móvil
+$medium:768px;        //tableta
+$large:992px;         //portatil
+$enormous:1200px;     //monitor
+
+//COLORES
+$text-brown:#620a06;
+$text-brown-dark:#3d3935;
+$text-brown-light:#ce9f7e;
+$text-grey-dark:#212529;
+$text-grey:#676869;
+$text-grey-light:rgb(196, 193, 193);
+$text-white:rgb(255,255,255);
+$text-yellow: #fef181;
+
+
+$bg-biege:#fadeab;
+$bg-blue-dark:#1c2a44;
+$bg-brown:#524c47;
+$bg-brown-dark:#3d3935;
+$bg-brown-light:#ce9f7e;
+$bg-orange:#e19160;
+$bg-wine-red:#97493d;
+$bg-wine:#3d0d14;
+$bg-skin:#fde9d3;
+$bg-white:rgb(255,255,255);
+$bg-white-smoke:rgb(250, 250, 250);
+
+$bg-try:#3c1913;                //aquest color es per anar provant
+
+
+//VARIABLES
+@mixin flexbox($direction, $justify, $align){
+    display: flex;
+    flex-direction:$direction;
+    justify-content:$justify;
+    align-items:$align;
+}

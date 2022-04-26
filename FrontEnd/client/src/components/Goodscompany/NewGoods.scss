@@ -1,0 +1,26 @@
+@import '../../styles/abstracts/variables';
+
+.new-goods{
+    &--form{
+        @include flexbox(column, center, start);
+        padding: 0 0 2rem 0;
+
+        &--label{
+            font-weight:500;
+            font-size:0.8rem;
+            text-transform:uppercase;
+            padding: 1rem 0 0.4rem 0;
+        }
+        &--input{
+            height:2.2rem;
+            width:16rem;
+            padding: 0 0.5rem 0 0.5rem;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+
+        &--button{
+            margin:1rem 0 0 0;
+        }
+    }
+}

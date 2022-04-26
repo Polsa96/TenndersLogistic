@@ -1,0 +1,20 @@
+@import '../../styles/abstracts/variables';
+
+main{
+    width:100%;
+    min-height:100%;
+    padding:4rem calc((100% - 1100px)/2) 1rem calc((100% - 1100px)/2);
+    @media(max-width:$enormous){
+        padding:4rem calc((100% - 920px)/2) 1rem calc((100% - 920px)/2);
+    }
+    @media(max-width:$large){
+        padding:4rem calc((100% - 720px)/2) 1rem calc((100% - 720px)/2);
+    }
+    @media(max-width:$medium){
+        padding:4rem calc((100% - 550px)/2) 1rem calc((100% - 550px)/2);
+    }
+    @media(max-width:$small){
+        width:100%;
+        padding:4rem 1rem 1rem 1rem;
+    }
+}
