@@ -2,7 +2,7 @@ import React from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { JwtContext } from "../../shared/context/JwtContext";
-// import './LogOut.scss'
+import './Logout.scss'
 
 
 export default function LogOut () {
@@ -24,6 +24,6 @@ export default function LogOut () {
 
     return (
         
-        <button className="button-component" onClick={signOut}>Cerrar sesión</button>
+        <p className="logout" onClick={signOut}>Cerrar sesión</p>
     )
 }

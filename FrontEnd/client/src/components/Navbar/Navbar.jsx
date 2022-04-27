@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react'
 import {NavLink} from 'react-router-dom';
 import { JwtContext } from '../../shared/context/JwtContext';
+import Logout from '../Logout/Logout'
 import './Navbar.scss'
 
 const Navbar = () => {
@@ -35,6 +36,7 @@ const Navbar = () => {
       <NavLink className={isBurgerCross ? "" : "change"} to="/logistics">Logistics</NavLink>
       <NavLink className={isBurgerCross ? "" : "change"} to="/contact">Contact us</NavLink>
       <NavLink className={isBurgerCross ? "" : "change"} to="/main">Main Page</NavLink>
+      <div className={isBurgerCross ? "" : "change"}><Logout></Logout></div>
       </>}
     </div>
     <button className={isBurgerCross ? "navbar--button change" : "navbar--button"} onClick={toggleBurguer}>

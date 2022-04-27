@@ -9,8 +9,8 @@ const SignupPage = () => {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 
-  const onSubmit = (e) => {
-    API.post("api/user/register", e).then((res) => {
+  const onSubmit = (formData) => {
+    API.post("api/user/register", formData).then((res) => {
       console.log("Register user", res);
     });
     navigate("/");

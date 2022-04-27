@@ -1,28 +1,63 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
+import { API } from '../../shared/services/api';
 import "./NewGoods.scss"
 
-const NewGoods = ({trucks}) => {
+const NewGoods = ({trucks, goodscompany}) => {
 
+  console.log(trucks)
     const { register, handleSubmit } = useForm();
+    const [filteredTrucks, setFilteredTrucks] = useState([]);
+    const [datesPush, setDatesPush] = useState([]);
+    const [clickSearch, setClickSearch] = useState(false);
+    let dates = []
+    let resApiData
 
     const onSubmit = (formData) =>{
-      console.log(trucks)
-      console.log(formData)
+
       let filterTypeTrucks = trucks.filter((truck) => truck.trailerload===formData.type)
 
-      let dates = Dates(formData.datestart,formData.datefinish)
-      // let filterDatesTrucks = filterTypeTrucks.filter((truck)=>truck.)
-      console.log(dates)
+      dates = Dates(formData.datestart,formData.datefinish)
 
-      console.log(filterTypeTrucks)
+      setDatesPush(dates)
+      
+
+      setFilteredTrucks(filterAvailableTrucks(filterTypeTrucks, dates))
+      setClickSearch(true)
+
     }
+
+    console.log(dates)
+
+    const onFinalSubmit = (formData)=>{
+      console.log("onFinalSubmit: ",formData)
+
+      //! Preparamos la mercancía para colgarla a la API
+      let {datestart,datefinish,...finalPush}=formData;
+      
+      finalPush={...finalPush,goodscompany:goodscompany._id, dates:datesPush}
+      console.log("Final final:", finalPush)
+
+      //! Preparamos el camión para actualizarlo
+      
+      let filterTruckId = trucks.filter((truck)=>truck._id===formData.truck)
+     
+
+      let goodsinformationNew={goodsinformation:filterTruckId[0].goodsinformation} //! Hem d'eliminar els que siguin null
+      console.log(goodsinformationNew.goodsinformation)
+
+      SendDataAPI(finalPush,resApiData,goodsinformationNew)
+
+      window.location.reload(false);
+
+   }
 
 
     function Dates(ds,de){
       let dateStart = new Date(ds).getTime();
       let dateEnd = new Date(de).getTime();
       let startingDate= new Date(ds);
+
 
       let difference = ((dateEnd-dateStart)/(1000*60*60*24));
 
@@ -39,6 +74,71 @@ const NewGoods = ({trucks}) => {
         }
         return dates
       }
+    }
+
+    function filterAvailableTrucks(fTypeTrucks, datesElected){
+
+      let filterAvailTrucks = [];
+
+      for(let fTypeTruck of fTypeTrucks){                         //*Miramos información de cada camión
+        let goodsinformations = fTypeTruck.goodsinformation
+        let holidays = fTypeTruck.notavailable
+        let banner = false;                                     //Bandera que se encarga de decirnos si hay alguna fecha que coincide
+
+        for(let goodsinformation of goodsinformations){           //*Miramos información de cada viaje de mercancias que tiene
+            let datesAvailable = goodsinformation.dates;
+  
+            if(datesAvailable!=null){
+              for(let dateAvailable of datesAvailable){
+                const dateAvailableSliced=dateAvailable.slice(0,10)
+
+                for(let dateElected of datesElected){
+
+                  if(dateAvailableSliced===dateElected){
+
+                    banner=true;
+                  }
+                }
+            }
+         }
+         
+        }
+
+        for(let holiday of holidays){                             //*Miramos información de cada dia festivo o otros que pueda tener
+          let datesAvailable = holiday.dates;
+
+          if(datesAvailable!=null){
+            for(let dateAvailable of datesAvailable){
+              const dateAvailableSliced=dateAvailable.slice(0,10)
+
+              for(let dateElected of datesElected){
+                if(dateAvailableSliced===dateElected){
+
+                  banner=true;
+                }
+              }
+            }
+          }
+        }
+        if(banner===false){
+          filterAvailTrucks=[...filterAvailTrucks,fTypeTruck]
+        }
+      }
+      console.log('Camions finals:',filterAvailTrucks)
+      return filterAvailTrucks
+    }
+
+    const SendDataAPI = async (finalPush, resApiData, goodsinformation) =>{
+      await API.post("api/goods",finalPush).then((res)=>{
+          resApiData=res.data
+          console.log('RESAPIDATA',resApiData)
+      })
+      
+      await goodsinformation.goodsinformation.push({goods:resApiData,from:finalPush.from, to:finalPush.to, dates:finalPush.dates})
+
+      await API.patch(`api/truck/pull/${finalPush.truck}`,goodsinformation).then((res)=>{
+        console.log(res)
+      })
     }
 
 
@@ -98,6 +198,27 @@ const NewGoods = ({trucks}) => {
 
           <input className="new-goods--form--button button-component" type="submit" value="Buscar camiones disponibles" />
     </form>
+
+    {clickSearch===true && 
+      <form className="new-goods--form" onSubmit={handleSubmit(onFinalSubmit)}>
+        <label lassName="new-goods--form--label">Camiones disponibles</label>
+        {filteredTrucks.length===0 ? 
+          <p>Ninguno</p> 
+          : 
+          <>
+
+          <select className="new-goods--form--input" id="truck" name="truck" {...register("truck")}>
+            {filteredTrucks.map((filteredTruck)=>(
+            <option key={filteredTruck._id} value={filteredTruck._id}>{filteredTruck.truckplate} - {filteredTruck.country}</option>
+            ))}
+          </select>
+
+          <input className="new-goods--form--button button-component" type="submit" value="Crear nueva mercancia" />
+          </>
+        
+        }
+      </form>
+    }
     
     </div>
   )

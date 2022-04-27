@@ -54,7 +54,7 @@ const pullTruck = async (req, res, next) => {
         patchTruck._id = id
         
         
-        const truckDB = await Truck.findByIdAndUpdate(id,{$set:{transportcompany:patchTruck.transportcompany, goods:patchTruck.goods}})
+        const truckDB = await Truck.findByIdAndUpdate(id,{$set:{goodsinformation:patchTruck.goodsinformation}})
         if (!truckDB) {
            return next(setError(404, 'Truck not found'))
         }

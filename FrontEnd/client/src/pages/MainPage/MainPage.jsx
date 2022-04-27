@@ -11,6 +11,7 @@ import { API } from '../../shared/services/api';
 const MainPage = () => {
     const [trucks, setTrucks] = useState([]);
     const [tcConfigTrucks, settcConfigTrucks] = useState({});
+    const [gcNewGoods, setgcNewGoods] = useState({});
     // const [trucks, setTrucks] = useState([]);
     const goodscompany = JSON.parse(localStorage.getItem('goodscompany'));
     const transportcompany = JSON.parse(localStorage.getItem('transportcompany'));
@@ -36,6 +37,7 @@ const MainPage = () => {
       if(goodscompany!==null && transportcompany===null){
         API.get(`/api/goodscompany/${goodscompany}`).then((res) => {
           console.log(res.data)
+          setgcNewGoods(res.data)
         })
       }
 
@@ -72,11 +74,10 @@ const MainPage = () => {
         <>
         <button onClick={()=>setOptions(2)}>Añadir transporte de bienes</button>
         <button onClick={()=>setOptions(3)}>Mirar Horarios</button>
-        {options === 2 && <NewGoods trucks={trucks}/>}
+        {options === 2 && <NewGoods trucks={trucks} goodscompany={gcNewGoods}/>}
         {options === 3 && <Schedule trucks={trucks} transportcompany={tcConfigTrucks}/>}
 
         </>}
-        <Logout></Logout>
         </>
         }
         

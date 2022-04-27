@@ -1,0 +1,12 @@
+@import '../../styles/abstracts/variables';
+
+.logout{
+    cursor:pointer;
+    color:$text-yellow;
+    white-space:nowrap;
+
+    @media(max-width:$medium){
+        color:$text-white;
+        padding: 1rem 0rem 1rem 2rem;
+    }
+}
